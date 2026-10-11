@@ -50,7 +50,35 @@ See "Status" for what exists. Out of scope for Phase 1: regional map, dynasties,
 stub), language drift, modding, art assets.
 
 ## Status
-(updated at end of each session)
+_Last updated: session 1 (Phase 1 foundations)._
+
+Done:
+- Project scaffold (Vite 8, React 19, PixiJS 8, Zustand 5, Zod 4, Vitest 5, TypeScript 7).
+- Zod schemas (`src/data/schemas/`): GameState, Pawn, Needs, Mood/Memory, Health, Job, Structure,
+  Stockpile/Resource, Tile/TileMap, SimEvent, plus content defs (names, terrain, traits).
+- Content JSON (`src/data/content/`): PIE-ish names, terrain, traits — validated at load (`src/data/content.ts`).
+- Sim core: mulberry32 RNG, fixed-tick `stepTick`, clock accumulator (pause/1x/3x), event bus,
+  runner, entity/component helpers, calendar (`time.ts`), value-noise map generation, pawn spawning
+  with reciprocal kin, `createNewGame`, JSON save/load.
+- UI: PixiJS map (terrain, structures, pawns, click-to-select), time controls, rAF game loop.
+- Tests: rng, loop/clock/bus, entities, mapgen, new game, calendar, schemas, content, save/load round-trip.
+
+Not yet: any gameplay systems (`src/sim/systems/index.ts` is empty — pawns stand still), pawn list /
+pawn panel / resource bar / event log, dev panel, save/load UI, buildings placement.
+
+## Calendar (tunable in `src/sim/time.ts`)
+10 ticks = 1 real second at 1x · 1 day = 600 ticks (60 s) · 1 season = 10 days · 1 year = 4 seasons.
 
 ## Decisions
 (one line each: decision — rationale)
+- Components are `Record<string(entityId), T>`, not `Map` — JSON-serializable for save/load with no conversion layer.
+- Systems take `(state, ctx)` where `ctx = { dt, tick, rng, emit }` rather than `(state, dt)` — keeps randomness and events explicit and deterministic without globals.
+- RNG state is written back to `GameState.rngState` after each tick — save/load mid-game resumes the identical random sequence.
+- Phase 1 uses a single colony-wide stockpile (no hauling, no per-item entities) — keeps job AI small; storage pits will raise capacity / cut spoilage instead.
+- Needs, mood and health are 0..1 (1 = good) — one scale for all utility scoring.
+- Ages are stored as `birthTick` (negative for founders) — age is always derived, never drifts.
+- Founding band = households (couple + 1–2 children) plus an elder for an odd count — gives kin structure from tick 0.
+- Map generation forces a radius-3 grass clearing at the center for the camp + starting hearth — guarantees a valid spawn.
+- Time-speed changes how many ticks run per frame, never `dt`; per-frame ticks are capped at 30 and excess dropped — avoids spiral-of-death after tab stalls.
+- No Immer: immutable updates via spread helpers in `entities.ts` — avoids an extra dependency; revisit if systems get verbose.
+- TypeScript 7 (native compiler) because it's current `latest`; pin to 5.x if tooling breaks.
