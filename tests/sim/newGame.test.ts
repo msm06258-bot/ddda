@@ -26,9 +26,10 @@ describe('createNewGame', () => {
     }
   });
 
-  it('places a completed hearth at the center', () => {
+  it('places a completed hearth at the center and a shelter beside it', () => {
     const s = createNewGame({ seed: 5 });
-    const [hearth] = entitiesWith(s, 'structure');
+    const [hearth, shelter] = entitiesWith(s, 'structure');
+    expect(getComponent(s, 'structure', shelter!)).toEqual({ kind: 'shelter', progress: 1 });
     expect(getComponent(s, 'structure', hearth!)).toEqual({ kind: 'hearth', progress: 1 });
     expect(getComponent(s, 'position', hearth!)).toEqual({ x: 32, y: 32 });
   });

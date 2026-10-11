@@ -1,8 +1,17 @@
 {
-  "movement": { "tilesPerSecond": 2 },
+  "movement": {
+    "tilesPerSecond": 2
+  },
   "needs": {
-    "decayPerDay": { "hunger": 0.8, "warmth": 0, "rest": 1.0, "social": 0.5, "meaning": 0.25 },
-    "critical": 0.15
+    "decayPerDay": {
+      "hunger": 0.8,
+      "warmth": 0,
+      "rest": 0.9,
+      "social": 0.3,
+      "meaning": 0.15
+    },
+    "critical": 0.15,
+    "luxuryThreshold": 0.3
   },
   "food": {
     "rawNutrition": 0.35,
@@ -11,7 +20,7 @@
     "mealMoodEffect": 0.05,
     "foodMemoryDays": 0.5,
     "eatThreshold": 0.6,
-    "eatenPerPawnPerDay": 1.6,
+    "eatenPerPawnPerDay": 2,
     "targetStockDays": 6,
     "autumnTargetStockDays": 14
   },
@@ -23,7 +32,11 @@
     "oldAgeOnsetYears": 55,
     "oldAgeDailyChancePerYear": 0.0015
   },
-  "mood": { "base": 0.5, "needWeight": 0.15, "approachPerDay": 4 },
+  "mood": {
+    "base": 0.5,
+    "needWeight": 0.15,
+    "approachPerDay": 4
+  },
   "warmth": {
     "comfortTemp": 10,
     "recoverPerDay": 2,
@@ -39,8 +52,14 @@
     "storagePitCapacity": 60,
     "storagePitMultiplier": 0.25
   },
-  "hearth": { "woodPerDay": 2 },
-  "rest": { "shelterCapacity": 4, "openAirMultiplier": 0.65, "openAirMoodEffect": -0.05 },
+  "hearth": {
+    "woodPerDay": 2
+  },
+  "rest": {
+    "shelterCapacity": 4,
+    "openAirMultiplier": 0.75,
+    "openAirMoodEffect": -0.05
+  },
   "work": {
     "skillFactorMin": 0.6,
     "skillFactorMax": 1.4,

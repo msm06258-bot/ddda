@@ -83,7 +83,12 @@ export type ClimateDef = z.infer<typeof ClimateDef>;
 const Num = z.number();
 export const BalanceDef = z.object({
   movement: z.object({ tilesPerSecond: Num.positive() }),
-  needs: z.object({ decayPerDay: z.record(NeedId, Num.nonnegative()), critical: Num }),
+  needs: z.object({
+    decayPerDay: z.record(NeedId, Num.nonnegative()),
+    critical: Num,
+    /** Social and meaning only drive behavior below this; above it they just shade mood. */
+    luxuryThreshold: Num,
+  }),
   food: z.object({
     rawNutrition: Num,
     mealNutrition: Num,
