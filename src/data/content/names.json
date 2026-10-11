@@ -1,0 +1,20 @@
+[
+  { "name": "*Pəter", "sex": "male", "gloss": "father" },
+  { "name": "*Māter", "sex": "female", "gloss": "mother" },
+  { "name": "*Wīros", "sex": "male", "gloss": "man, hero" },
+  { "name": "*Gʷēnh₂", "sex": "female", "gloss": "woman" },
+  { "name": "*Seh₂ul", "sex": "female", "gloss": "sun" },
+  { "name": "*Dyēus", "sex": "male", "gloss": "bright sky" },
+  { "name": "*H₂éwsōs", "sex": "female", "gloss": "dawn" },
+  { "name": "*Perkʷunos", "sex": "male", "gloss": "the striker, oak" },
+  { "name": "*Dʰéǵʰōm", "sex": "female", "gloss": "earth" },
+  { "name": "*H₁éḱwos", "sex": "male", "gloss": "horse" },
+  { "name": "*Gʷṓws", "sex": "female", "gloss": "cow" },
+  { "name": "*Bʰréh₂tēr", "sex": "male", "gloss": "brother" },
+  { "name": "*Swésōr", "sex": "female", "gloss": "sister" },
+  { "name": "*Dʰugh₂tḗr", "sex": "female", "gloss": "daughter" },
+  { "name": "*Suhₓnús", "sex": "male", "gloss": "son" },
+  { "name": "*H₂nḗr", "sex": "male", "gloss": "man, vigor" },
+  { "name": "*Wl̥kʷos", "sex": "male", "gloss": "wolf" },
+  { "name": "*Mḗh₁n̥s", "sex": "female", "gloss": "moon" }
+]

@@ -1,0 +1,40 @@
+[
+  {
+    "id": "hardy",
+    "label": "Hardy",
+    "description": "Bred on the open steppe; shrugs off the cold.",
+    "needDecay": { "warmth": 0.7 }
+  },
+  {
+    "id": "gluttonous",
+    "label": "Gluttonous",
+    "description": "Always eyeing the cooking pot.",
+    "needDecay": { "hunger": 1.4 }
+  },
+  {
+    "id": "devout",
+    "label": "Devout",
+    "description": "Hears the ancestors in the hearth-smoke.",
+    "needDecay": { "meaning": 1.3 },
+    "moodOffset": 0.05
+  },
+  {
+    "id": "gregarious",
+    "label": "Gregarious",
+    "description": "Happiest at a crowded fire.",
+    "needDecay": { "social": 1.4 }
+  },
+  {
+    "id": "taciturn",
+    "label": "Taciturn",
+    "description": "Speaks rarely and needs company less.",
+    "needDecay": { "social": 0.6 },
+    "moodOffset": -0.03
+  },
+  {
+    "id": "tireless",
+    "label": "Tireless",
+    "description": "Walks behind the herds from dawn to dusk.",
+    "needDecay": { "rest": 0.75 }
+  }
+]

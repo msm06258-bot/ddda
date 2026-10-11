@@ -1,0 +1,7 @@
+[
+  { "id": "grass", "label": "Steppe grass", "color": "#8a9a4b", "walkable": true, "moveCost": 1 },
+  { "id": "forest", "label": "Forest", "color": "#3f5e2e", "walkable": true, "moveCost": 1.6 },
+  { "id": "rock", "label": "Rock", "color": "#7d7468", "walkable": false, "moveCost": 1 },
+  { "id": "water", "label": "Water", "color": "#3b6a8c", "walkable": false, "moveCost": 1 },
+  { "id": "fertile", "label": "Fertile soil", "color": "#6b5232", "walkable": true, "moveCost": 1 }
+]
