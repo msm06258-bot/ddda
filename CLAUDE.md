@@ -50,35 +50,77 @@ See "Status" for what exists. Out of scope for Phase 1: regional map, dynasties,
 stub), language drift, modding, art assets.
 
 ## Status
-_Last updated: session 1 (Phase 1 foundations)._
+_Last updated: session 2 — Phase 1 feature-complete; next is playtesting and tuning._
 
-Done:
-- Project scaffold (Vite 8, React 19, PixiJS 8, Zustand 5, Zod 4, Vitest 5, TypeScript 7).
-- Zod schemas (`src/data/schemas/`): GameState, Pawn, Needs, Mood/Memory, Health, Job, Structure,
-  Stockpile/Resource, Tile/TileMap, SimEvent, plus content defs (names, terrain, traits).
-- Content JSON (`src/data/content/`): PIE-ish names, terrain, traits — validated at load (`src/data/content.ts`).
-- Sim core: mulberry32 RNG, fixed-tick `stepTick`, clock accumulator (pause/1x/3x), event bus,
-  runner, entity/component helpers, calendar (`time.ts`), value-noise map generation, pawn spawning
-  with reciprocal kin, `createNewGame`, JSON save/load.
-- UI: PixiJS map (terrain, structures, pawns, click-to-select), time controls, rAF game loop.
-- Tests: rng, loop/clock/bus, entities, mapgen, new game, calendar, schemas, content, save/load round-trip.
+All ten Phase 1 items are in place:
+- **Map**: 64×64 value-noise terrain; the camp is placed in the largest connected walkable region with
+  a guaranteed clearing, a starting hearth and one hide shelter.
+- **Pawns**: name, age (`birthTick`), sex, reciprocal kin, skills (0–20), traits, needs, mood with
+  memories, health. Founding band = households.
+- **Needs/mood/health** (`systems/needs.ts`, `mood.ts`, `health.ts`): data-driven decay with trait
+  multipliers; mood drifts toward a target from needs + traits + memories; starvation/exposure damage,
+  regen, old-age death.
+- **Movement**: A* (`pathfinding.ts`), `movement` component, terrain move costs.
+- **Climate** (`environment.ts`, `systems/warmth.ts`, `stockpile.ts`, `seasons.ts`): seasonal +
+  diurnal + per-day weather temperature (pure function of seed+tick), warmth from lit hearth and
+  shelters, spoilage scaled by temperature and slowed by storage pits, hearths burn wood, season omens.
+- **Jobs** (`jobs/`, `systems/jobs.ts`): utility AI scores every job (need urgency or colony demand ×
+  skill × night factor − distance + small noise), assigns the best reachable one; interrupts for
+  critical needs; jobs: idle, eat, rest, warmUp, socialize, performRitual, forage, hunt, cook,
+  chopWood, quarry, build, bury.
+- **Structures** (`structures.ts`): hearth, shelter, storage pit, burial mound; blueprints paid up front
+  and built by pawns.
+- **Death & burial** (`death.ts`): corpse component; survivors bury the dead in the nearest mound (or
+  raise a new kurgan), with funeral log line, meaning, and burial/grief memories. Rites at an ancestor
+  mound name the ancestor.
+- **UI**: map (night tint, smooth movement, click to select/place), resource bar, build menu, pawn list,
+  pawn panel (needs, traits, skills, kin with PIE kin terms, memories), chronicle, time controls
+  (space/1/3), save/load (file + browser quick save), new game by seed.
+- **Dev panel** (`src/dev/`, toggle with backtick): spawn pawn, +50 resources, kill selected, trigger
+  events (omen, cold snap, aurochs herd, rot), fast-forward 6h/1 day/1 season. In dev builds the store
+  is on `window.hm`.
+- **Tests**: 125 Vitest specs incl. need decay, job selection, food consumption, spoilage, death &
+  burial, save/load round-trip with all systems, and a first-year balance test on three seeds.
 
-Not yet: any gameplay systems (`src/sim/systems/index.ts` is empty — pawns stand still), pawn list /
-pawn panel / resource bar / event log, dev panel, save/load UI, buildings placement.
+Known gaps / next candidates:
+- No births, so the band only shrinks (dynasties are Phase 2).
+- No cancel/deconstruct for blueprints; one-tile structures only.
+- Chronicle (event log) lives in the UI store and is not saved.
+- Resource nodes never deplete; hunting has no animal entities.
+- Balance is "survives year 1 without player input"; it is probably too easy once the player builds.
 
 ## Calendar (tunable in `src/sim/time.ts`)
 10 ticks = 1 real second at 1x · 1 day = 600 ticks (60 s) · 1 season = 10 days · 1 year = 4 seasons.
+
+## Where the numbers live
+`src/data/content/`: `balance.json` (rates, thresholds), `jobs.json` (durations, yields, base utility),
+`structures.json` (costs, build time), `climate.json` (temperatures, seasonal yields), `lore.json`
+(myth fragments, death lines, season omens, kin terms), `names.json`, `terrain.json`, `traits.json`.
+A tuning change should usually be a JSON edit; run `npm run test` afterwards (the balance test guards
+against an unwinnable first year).
 
 ## Decisions
 (one line each: decision — rationale)
 - Components are `Record<string(entityId), T>`, not `Map` — JSON-serializable for save/load with no conversion layer.
 - Systems take `(state, ctx)` where `ctx = { dt, tick, rng, emit }` rather than `(state, dt)` — keeps randomness and events explicit and deterministic without globals.
 - RNG state is written back to `GameState.rngState` after each tick — save/load mid-game resumes the identical random sequence.
-- Phase 1 uses a single colony-wide stockpile (no hauling, no per-item entities) — keeps job AI small; storage pits will raise capacity / cut spoilage instead.
+- Phase 1 uses a single colony-wide stockpile (no hauling, no per-item entities) — keeps job AI small; storage pits raise capacity / cut spoilage instead.
 - Needs, mood and health are 0..1 (1 = good) — one scale for all utility scoring.
 - Ages are stored as `birthTick` (negative for founders) — age is always derived, never drifts.
 - Founding band = households (couple + 1–2 children) plus an elder for an odd count — gives kin structure from tick 0.
-- Map generation forces a radius-3 grass clearing at the center for the camp + starting hearth — guarantees a valid spawn.
 - Time-speed changes how many ticks run per frame, never `dt`; per-frame ticks are capped at 30 and excess dropped — avoids spiral-of-death after tab stalls.
 - No Immer: immutable updates via spread helpers in `entities.ts` — avoids an extra dependency; revisit if systems get verbose.
 - TypeScript 7 (native compiler) because it's current `latest`; pin to 5.x if tooling breaks.
+- Added a fifth resource, `meals` (cooked food, more nourishing than raw) — gives the cook job a reason to exist.
+- Added jobs beyond the brief: `eat`, `warmUp`, `quarry`, `bury`, `idle` — eating/warming need a place to happen, stone needs a source, the dead need burying.
+- Temperature is a pure function of seed + tick (no weather state) — nothing extra to save, trivially deterministic.
+- "Lit hearth" = any complete hearth while the shared stockpile has wood; hearths burn wood continuously — simple fuel loop without per-hearth state.
+- Structure costs are paid when the blueprint is placed — no hauling in Phase 1.
+- A death leaves a `corpse` component on the same entity (pawn identity kept) — the dead stay addressable for kin, mounds, and future ancestor/storyteller systems.
+- Burial auto-raises a kurgan near camp if no mound exists — a death always resolves into a mound.
+- Social and meaning only drive behavior below a "luxury" threshold (0.3) — otherwise pawns chat instead of gathering food for winter.
+- Work utility scales with colony demand (food days vs a seasonal target; wood/stone vs targets), dropping to 0 for wood/stone once the target is met — stops pointless hoarding.
+- Camp is placed in the largest connected walkable region — a walled-in camp starved a whole band in playtesting (seed 15684).
+- Tile targets are found with an outward ring search that stops early — a full-map scan per decision dominated tick time.
+- The starting camp includes one hide shelter (sleeps 4 of 8) — matches "seasonal camp" and gives the player a first goal.
+- Dev builds expose the Zustand store as `window.hm` — handy for console debugging and scripted playtests.
