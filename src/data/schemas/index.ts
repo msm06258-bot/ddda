@@ -3,6 +3,7 @@ export * from './contentDefs';
 export * from './event';
 export * from './gameState';
 export * from './job';
+export * from './movement';
 export * from './needs';
 export * from './pawn';
 export * from './resource';

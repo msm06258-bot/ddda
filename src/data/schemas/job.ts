@@ -3,14 +3,18 @@ import { EntityId, TilePos, Unit } from './common';
 
 export const JobKind = z.enum([
   'idle',
+  'eat',
+  'rest',
+  'warmUp',
+  'socialize',
+  'performRitual',
   'forage',
   'hunt',
   'cook',
   'chopWood',
+  'quarry',
   'build',
-  'rest',
-  'socialize',
-  'performRitual',
+  'bury',
 ]);
 export type JobKind = z.infer<typeof JobKind>;
 

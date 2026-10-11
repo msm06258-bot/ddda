@@ -1,6 +1,7 @@
 import { z } from 'zod';
 
-export const ResourceId = z.enum(['food', 'wood', 'stone', 'hides']);
+/** food = raw (foraged/hunted); meals = cooked food, more nourishing. */
+export const ResourceId = z.enum(['food', 'meals', 'wood', 'stone', 'hides']);
 export type ResourceId = z.infer<typeof ResourceId>;
 
 /** Colony-wide stockpile (Phase 1 has no hauling; see CLAUDE.md Decisions). */

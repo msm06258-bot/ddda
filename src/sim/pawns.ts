@@ -77,14 +77,7 @@ export function spawnPawn(
     meaning: rng.range(0.5, 0.9),
   });
   s = setComponent(s, 'mood', id, { value: 0.6, memories: [] });
-  s = setComponent(s, 'health', id, { value: 1 });
-  s = setComponent(s, 'job', id, {
-    kind: 'idle',
-    targetTile: null,
-    targetEntity: null,
-    progress: 0,
-    startedTick: s.tick,
-  });
+  s = setComponent(s, 'health', id, { value: 1, lastHarm: null });
 
   return { state: s, id };
 }

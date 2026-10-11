@@ -1,0 +1,10 @@
+{
+  "seasonTemps": { "spring": 10, "summer": 22, "autumn": 9, "winter": -6 },
+  "diurnalAmplitude": 5,
+  "weatherAmplitude": 3,
+  "nightStart": 0.8,
+  "nightEnd": 0.25,
+  "forageYield": { "spring": 1, "summer": 1.3, "autumn": 1.5, "winter": 0.25 },
+  "huntYield": { "spring": 0.9, "summer": 1, "autumn": 1.1, "winter": 0.8 },
+  "terrainForageYield": { "fertile": 1.5, "forest": 1, "grass": 0.7 }
+}

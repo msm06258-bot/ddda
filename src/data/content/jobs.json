@@ -1,0 +1,15 @@
+[
+  { "id": "idle", "label": "Idling", "skill": null, "workTicks": 30, "maxTicks": 200, "baseUtility": 0.05 },
+  { "id": "eat", "label": "Eating", "skill": null, "workTicks": 30, "maxTicks": 400, "baseUtility": 1.4 },
+  { "id": "rest", "label": "Resting", "skill": null, "workTicks": 0, "maxTicks": 2400, "baseUtility": 1.2, "restorePerDay": { "rest": 3 } },
+  { "id": "warmUp", "label": "Warming by the fire", "skill": null, "workTicks": 0, "maxTicks": 600, "baseUtility": 1.5 },
+  { "id": "socialize", "label": "Talking at the hearth", "skill": null, "workTicks": 0, "maxTicks": 400, "baseUtility": 0.9, "restorePerDay": { "social": 2.5 } },
+  { "id": "performRitual", "label": "Performing a rite", "skill": "lore", "workTicks": 120, "maxTicks": 600, "baseUtility": 0.9, "restoreOnComplete": { "meaning": 0.5 } },
+  { "id": "forage", "label": "Foraging", "skill": "foraging", "workTicks": 120, "maxTicks": 900, "baseUtility": 0.8, "yield": { "food": 3 } },
+  { "id": "hunt", "label": "Hunting", "skill": "hunting", "workTicks": 250, "maxTicks": 1200, "baseUtility": 0.7, "yield": { "food": 9, "hides": 2 } },
+  { "id": "cook", "label": "Cooking", "skill": "cooking", "workTicks": 60, "maxTicks": 400, "baseUtility": 0.6, "consume": { "food": 3 }, "yield": { "meals": 3 } },
+  { "id": "chopWood", "label": "Chopping wood", "skill": "woodcutting", "workTicks": 150, "maxTicks": 900, "baseUtility": 0.7, "yield": { "wood": 4 } },
+  { "id": "quarry", "label": "Gathering stone", "skill": "building", "workTicks": 200, "maxTicks": 900, "baseUtility": 0.4, "yield": { "stone": 3 } },
+  { "id": "build", "label": "Building", "skill": "building", "workTicks": 200, "maxTicks": 900, "baseUtility": 0.75 },
+  { "id": "bury", "label": "Burying the dead", "skill": null, "workTicks": 100, "maxTicks": 1200, "baseUtility": 1.0 }
+]

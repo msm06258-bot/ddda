@@ -11,7 +11,7 @@ export function createEmptyState(seed: number, width = 64, height = 64): GameSta
     rngState: seedToState(seed),
     nextEntityId: 1,
     map: { width, height, tiles },
-    resources: { food: 0, wood: 0, stone: 0, hides: 0 },
+    resources: { food: 0, meals: 0, wood: 0, stone: 0, hides: 0 },
     components: {
       pawn: {},
       position: {},
@@ -20,6 +20,8 @@ export function createEmptyState(seed: number, width = 64, height = 64): GameSta
       health: {},
       job: {},
       structure: {},
+      movement: {},
+      corpse: {},
     },
   };
 }

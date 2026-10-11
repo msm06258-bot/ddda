@@ -2,7 +2,8 @@ import { z } from 'zod';
 import { EntityId, EntityKey, TilePos } from './common';
 import { Job } from './job';
 import { Needs } from './needs';
-import { Health, Mood, Pawn } from './pawn';
+import { Movement } from './movement';
+import { Corpse, Health, Mood, Pawn } from './pawn';
 import { Stockpile } from './resource';
 import { Structure } from './structure';
 import { TileMap } from './tile';
@@ -17,6 +18,8 @@ export const Components = z.object({
   health: componentMap(Health),
   job: componentMap(Job),
   structure: componentMap(Structure),
+  movement: componentMap(Movement),
+  corpse: componentMap(Corpse),
 });
 export type Components = z.infer<typeof Components>;
 export type ComponentName = keyof Components;

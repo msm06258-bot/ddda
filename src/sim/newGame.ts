@@ -14,7 +14,7 @@ export type NewGameOptions = {
   pawnCount?: number;
 };
 
-export const STARTING_RESOURCES = { food: 40, wood: 20, stone: 5, hides: 4 } as const;
+export const STARTING_RESOURCES = { food: 40, meals: 0, wood: 20, stone: 5, hides: 4 } as const;
 
 /**
  * Spawns the starting band as households: a couple plus 1–2 children each,

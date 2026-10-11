@@ -1,0 +1,29 @@
+{
+  "ritual": [
+    "{name} poured milk upon the hearth-stones, and the smoke climbed straight to the sky-father.",
+    "{name} sang the old words to the fire. The fire answered with a crackle.",
+    "{name} set a bowl of grain beside the hearth for those who came before.",
+    "{name} named the cattle one by one, so the gods would know them."
+  ],
+  "ritualAtMound": [
+    "{name} sat at the mound of {ancestor} until the shadows grew long, speaking of the herds.",
+    "{name} poured mead into the earth of {ancestor}'s mound. The grass seemed greener there.",
+    "{name} told {ancestor} the news of the camp. The wind carried the answer away."
+  ],
+  "burial": [
+    "They raised the earth over {deceased}. {name} placed ochre on the body, red as the first dawn.",
+    "{deceased} was laid in the mound facing the sunrise, with a pot of food for the long road.",
+    "{name} spoke the name of {deceased} three times, and the band answered three times, and the mound was closed."
+  ],
+  "death": {
+    "starvation": "{deceased} grew thin as winter grass, and died hungry.",
+    "exposure": "The cold took {deceased} in the night.",
+    "oldAge": "{deceased} closed their eyes, old and full of days, and went down the road of the ancestors."
+  },
+  "seasonTurn": {
+    "spring": "The ice broke on the river. The cows bellowed for new grass.",
+    "summer": "The sun stood high and long over the steppe.",
+    "autumn": "The geese flew south. The elders said: fill the pits.",
+    "winter": "Snow came on the north wind. The hearth is the whole world now."
+  }
+}

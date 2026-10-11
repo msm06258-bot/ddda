@@ -1,0 +1,74 @@
+{
+  "movement": { "tilesPerSecond": 2 },
+  "needs": {
+    "decayPerDay": { "hunger": 0.8, "warmth": 0, "rest": 1.0, "social": 0.5, "meaning": 0.25 },
+    "critical": 0.15
+  },
+  "food": {
+    "rawNutrition": 0.35,
+    "mealNutrition": 0.5,
+    "rawMoodEffect": -0.04,
+    "mealMoodEffect": 0.05,
+    "foodMemoryDays": 0.5,
+    "eatThreshold": 0.6,
+    "eatenPerPawnPerDay": 1.6,
+    "targetStockDays": 6,
+    "autumnTargetStockDays": 14
+  },
+  "health": {
+    "starvationPerDay": 0.5,
+    "exposurePerDay": 0.8,
+    "regenPerDay": 0.2,
+    "regenNeedFloor": 0.3,
+    "oldAgeOnsetYears": 55,
+    "oldAgeDailyChancePerYear": 0.0015
+  },
+  "mood": { "base": 0.5, "needWeight": 0.15, "approachPerDay": 4 },
+  "warmth": {
+    "comfortTemp": 15,
+    "recoverPerDay": 2,
+    "lossPerDegreePerDay": 0.067,
+    "hearthBonus": 16,
+    "hearthRadius": 4,
+    "shelterBonus": 10,
+    "shelterRadius": 1
+  },
+  "spoilage": {
+    "baseRatePerDay": 0.04,
+    "referenceTemp": 20,
+    "storagePitCapacity": 60,
+    "storagePitMultiplier": 0.25
+  },
+  "hearth": { "woodPerDay": 2 },
+  "rest": { "shelterCapacity": 4, "openAirMultiplier": 0.65, "openAirMoodEffect": -0.05 },
+  "work": {
+    "skillFactorMin": 0.6,
+    "skillFactorMax": 1.4,
+    "distancePenaltyPerTile": 0.004,
+    "noise": 0.05,
+    "skillGainChance": 0.05,
+    "moodSpeedMin": 0.75,
+    "moodSpeedRange": 0.5,
+    "huntBaseSuccess": 0.4,
+    "huntSuccessPerSkill": 0.03,
+    "huntMinDistance": 8,
+    "huntMaxDistance": 20,
+    "targetWood": 30,
+    "autumnTargetWood": 60,
+    "targetStone": 15,
+    "maxBuildersPerSite": 2
+  },
+  "mourning": {
+    "griefMood": -0.15,
+    "kinGriefMood": -0.3,
+    "griefDays": 5,
+    "burialMeaning": 0.3,
+    "burialMood": 0.08,
+    "burialMemoryDays": 3
+  },
+  "ritual": {
+    "moundMeaningBonus": 0.15,
+    "moodEffect": 0.08,
+    "memoryDays": 1
+  }
+}

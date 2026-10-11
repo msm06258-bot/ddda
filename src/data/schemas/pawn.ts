@@ -49,7 +49,21 @@ export const Mood = z.object({
 });
 export type Mood = z.infer<typeof Mood>;
 
+export const DeathCause = z.enum(['starvation', 'exposure', 'oldAge']);
+export type DeathCause = z.infer<typeof DeathCause>;
+
 export const Health = z.object({
   value: Unit,
+  /** The most recent source of damage; becomes the cause of death if health reaches 0. */
+  lastHarm: DeathCause.nullable(),
 });
 export type Health = z.infer<typeof Health>;
+
+/** Present on a pawn entity once it has died. Living pawns are those with `pawn` and no `corpse`. */
+export const Corpse = z.object({
+  cause: DeathCause,
+  diedTick: z.number().int(),
+  /** Entity ID of the burial mound once buried; null while the body lies unburied. */
+  moundId: EntityId.nullable(),
+});
+export type Corpse = z.infer<typeof Corpse>;

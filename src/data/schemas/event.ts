@@ -1,8 +1,6 @@
 import { z } from 'zod';
 import { EntityId } from './common';
-
-export const DeathCause = z.enum(['starvation', 'exposure', 'oldAge']);
-export type DeathCause = z.infer<typeof DeathCause>;
+import { DeathCause } from './pawn';
 
 export const LogCategory = z.enum(['info', 'birth', 'death', 'ritual', 'build', 'omen']);
 export type LogCategory = z.infer<typeof LogCategory>;
@@ -15,6 +13,12 @@ export const SimEvent = z.discriminatedUnion('type', [
     tick: z.number().int(),
     pawnId: EntityId,
     cause: DeathCause,
+  }),
+  z.object({
+    type: z.literal('pawnBuried'),
+    tick: z.number().int(),
+    pawnId: EntityId,
+    moundId: EntityId,
   }),
   z.object({ type: z.literal('structureCompleted'), tick: z.number().int(), entityId: EntityId }),
   z.object({

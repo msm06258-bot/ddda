@@ -1,0 +1,6 @@
+[
+  { "id": "hearth", "label": "Hearth", "description": "The sacred center. Warms those nearby while there is wood to burn.", "cost": { "stone": 5, "wood": 2 }, "buildTicks": 150 },
+  { "id": "shelter", "label": "Hide shelter", "description": "Poles and hides. Warmth and better sleep for four.", "cost": { "wood": 15, "hides": 3 }, "buildTicks": 300 },
+  { "id": "storagePit", "label": "Storage pit", "description": "A lined pit in cool earth. Slows the rot of stored food.", "cost": { "wood": 4, "stone": 4 }, "buildTicks": 200 },
+  { "id": "burialMound", "label": "Burial mound", "description": "A kurgan for the honored dead. Rites here carry further.", "cost": { "stone": 8 }, "buildTicks": 300 }
+]
