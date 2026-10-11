@@ -1,1 +1,19 @@
-body { margin: 0; background: #1b1712; color: #e8dcc4; font-family: system-ui, sans-serif; }
+:root {
+  --bg: #1b1712;
+  --panel: #2a241c;
+  --text: #e8dcc4;
+  --muted: #a8987a;
+  --accent: #e0752d;
+}
+body { margin: 0; background: var(--bg); color: var(--text); font-family: system-ui, sans-serif; }
+.app { padding: 12px 16px; }
+header { display: flex; align-items: center; gap: 24px; flex-wrap: wrap; }
+h1 { font-size: 20px; margin: 0; letter-spacing: 0.04em; }
+.time-controls { display: flex; align-items: center; gap: 6px; }
+.time-controls .date { min-width: 200px; text-transform: capitalize; }
+.time-controls .tick { color: var(--muted); font-size: 12px; margin-left: 8px; }
+button { background: var(--panel); color: var(--text); border: 1px solid #4a3f30; border-radius: 4px; padding: 4px 10px; cursor: pointer; }
+button.active { border-color: var(--accent); color: var(--accent); }
+main { margin-top: 12px; }
+.map-view canvas { display: block; max-width: 100%; height: auto; image-rendering: pixelated; }
+.hint { color: var(--muted); }
