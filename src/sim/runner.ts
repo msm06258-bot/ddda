@@ -1,7 +1,7 @@
 import type { GameState } from '../data/schemas';
 import type { EventBus } from './eventBus';
-import { stepTick } from './step';
-import type { System } from './system';
+import { stepTick, withContext } from './step';
+import type { System, SystemContext } from './system';
 
 /**
  * Owns the current GameState and publishes events after each tick.
@@ -12,6 +12,8 @@ export type SimRunner = {
   /** Replace the state wholesale (load game, dev commands). */
   setState(state: GameState): void;
   runTicks(n: number): GameState;
+  /** Apply a command between ticks; any events it emits are published. */
+  apply(command: (state: GameState, ctx: SystemContext) => GameState): GameState;
 };
 
 export function createSimRunner(
@@ -31,6 +33,12 @@ export function createSimRunner(
         state = r.state;
         bus.publish(r.events);
       }
+      return state;
+    },
+    apply(command) {
+      const r = withContext(state, command);
+      state = r.state;
+      bus.publish(r.events);
       return state;
     },
   };

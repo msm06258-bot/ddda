@@ -42,3 +42,11 @@ export function calendarAt(tick: number): CalendarDate {
     timeOfDay: (tick % TICKS_PER_DAY) / TICKS_PER_DAY,
   };
 }
+
+/** Logical seconds in one in-game day. */
+export const DAY_SECONDS = TICKS_PER_DAY / TICKS_PER_SECOND;
+
+/** Converts a per-day rate into the amount for a step of dt logical seconds. */
+export function perDay(ratePerDay: number, dt: number): number {
+  return (ratePerDay * dt) / DAY_SECONDS;
+}
