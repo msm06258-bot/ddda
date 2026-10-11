@@ -80,25 +80,49 @@ export function countJobsOnEntity(state: GameState, pawnId: EntityId, kind: JobK
   return otherJobs(state, pawnId, [kind]).filter((j) => j!.targetEntity === entity).length;
 }
 
-/** Best tile by score (higher is better), scanning the whole map. Ties go to the first in row-major order. */
-export function bestTile(
+/**
+ * Best tile near `from`, where a tile's score is value / (1 + 0.05 * manhattanDistance).
+ * Searches outward ring by ring and stops once no farther tile could beat the best found,
+ * given that value never exceeds maxValue. Ties go to the first tile found (deterministic).
+ */
+export function bestTileNear(
   state: GameState,
-  score: (pos: TilePos, terrain: TerrainId) => number | null,
+  from: TilePos,
+  value: (pos: TilePos, terrain: TerrainId) => number | null,
   reserved: Set<string>,
+  maxValue: number,
 ): TilePos | null {
+  const { width, height } = state.map;
+  const maxRadius = Math.max(width, height);
   let best: TilePos | null = null;
   let bestScore = -Infinity;
-  const { width, height } = state.map;
-  for (let y = 0; y < height; y++) {
-    for (let x = 0; x < width; x++) {
-      const t = terrainAt(state.map, x, y)!;
-      const pos = { x, y };
-      if (reserved.has(tileKey(pos))) continue;
-      const sc = score(pos, t);
-      if (sc !== null && sc > bestScore) {
-        best = pos;
-        bestScore = sc;
-      }
+  const consider = (x: number, y: number) => {
+    if (x < 0 || y < 0 || x >= width || y >= height) return;
+    const pos = { x, y };
+    if (reserved.has(tileKey(pos))) return;
+    const v = value(pos, terrainAt(state.map, x, y)!);
+    if (v === null) return;
+    const sc = v / (1 + manhattan(from, pos) * 0.05);
+    if (sc > bestScore) {
+      best = pos;
+      bestScore = sc;
+    }
+  };
+
+  for (let r = 0; r <= maxRadius; r++) {
+    // Every tile on Chebyshev ring r is at least r steps away.
+    if (best !== null && maxValue / (1 + r * 0.05) <= bestScore) break;
+    if (r === 0) {
+      consider(from.x, from.y);
+      continue;
+    }
+    for (let d = -r; d <= r; d++) {
+      consider(from.x + d, from.y - r);
+      consider(from.x + d, from.y + r);
+    }
+    for (let d = -r + 1; d <= r - 1; d++) {
+      consider(from.x - r, from.y + d);
+      consider(from.x + r, from.y + d);
     }
   }
   return best;

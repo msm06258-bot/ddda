@@ -38,3 +38,21 @@ describe('save/load', () => {
     expect(() => deserializeGame(JSON.stringify({ ...bad, schemaVersion: 999 }))).toThrow();
   });
 });
+
+describe('save/load with the full simulation', () => {
+  it('round-trips a mid-game state and continues identically', async () => {
+    const { defaultSystems } = await import('../../src/sim/systems');
+    const start = createNewGame({ seed: 11 });
+    const mid = stepTicks(start, defaultSystems, 3000).state;
+    expect(Object.keys(mid.components.job).length).toBeGreaterThan(0);
+    expect(Object.keys(mid.components.movement).length).toBeGreaterThanOrEqual(0);
+
+    const reloaded = deserializeGame(serializeGame(mid));
+    expect(reloaded).toEqual(mid);
+
+    const a = stepTicks(mid, defaultSystems, 1500);
+    const b = stepTicks(reloaded, defaultSystems, 1500);
+    expect(serializeGame(b.state)).toBe(serializeGame(a.state));
+    expect(b.events).toEqual(a.events);
+  });
+});

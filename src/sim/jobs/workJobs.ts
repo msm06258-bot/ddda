@@ -8,7 +8,7 @@ import { livingPawns } from '../pawnQueries';
 import { blueprints, campCenter, isHearthLit, manhattan, positionOf } from '../structures';
 import {
   addResources,
-  bestTile,
+  bestTileNear,
   countJobsOnEntity,
   foodDemand,
   otherJobs,
@@ -30,9 +30,9 @@ function nearestTile(
   kind: 'forage' | 'chopWood' | 'quarry',
   pred: (pos: TilePos) => boolean,
   value: (pos: TilePos) => number = () => 1,
+  maxValue = 1,
 ): TilePos | null {
-  const from = pawnPos(state, id);
-  return bestTile(state, (pos) => (pred(pos) ? value(pos) / (1 + manhattan(from, pos) * 0.05) : null), reservedTiles(state, id, [kind]));
+  return bestTileNear(state, pawnPos(state, id), (pos) => (pred(pos) ? value(pos) : null), reservedTiles(state, id, [kind]), maxValue);
 }
 
 const terrainOf = (state: GameState, p: TilePos) => state.map.tiles[p.y * state.map.width + p.x]?.terrain;
@@ -49,6 +49,7 @@ export const forage: JobHandler = {
       'forage',
       (p) => (yields[terrainOf(state, p)!] ?? 0) > 0,
       (p) => yields[terrainOf(state, p)!] ?? 0,
+      Math.max(...Object.values(yields).map((v) => v ?? 0)),
     );
     return tile && { targetTile: tile, targetEntity: null };
   },
