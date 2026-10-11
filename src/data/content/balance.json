@@ -25,10 +25,10 @@
   },
   "mood": { "base": 0.5, "needWeight": 0.15, "approachPerDay": 4 },
   "warmth": {
-    "comfortTemp": 15,
+    "comfortTemp": 10,
     "recoverPerDay": 2,
     "lossPerDegreePerDay": 0.067,
-    "hearthBonus": 16,
+    "hearthBonus": 20,
     "hearthRadius": 4,
     "shelterBonus": 10,
     "shelterRadius": 1

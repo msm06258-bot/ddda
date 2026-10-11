@@ -46,3 +46,19 @@ export function emptyWorld(seed = 1, size = 24): GameState {
 export function apply(state: GameState, fn: (s: GameState, ctx: SystemContext) => GameState) {
   return withContext(state, fn);
 }
+
+import type { StructureKind } from '../src/data/schemas';
+import { createEntity } from '../src/sim/entities';
+
+/** Adds a complete (or partially built) structure at pos. */
+export function addStructure(
+  state: GameState,
+  kind: StructureKind,
+  pos: TilePos,
+  progress = 1,
+): { state: GameState; id: EntityId } {
+  const c = createEntity(state);
+  let s = setComponent(c.state, 'structure', c.id, { kind, progress });
+  s = setComponent(s, 'position', c.id, pos);
+  return { state: s, id: c.id };
+}
