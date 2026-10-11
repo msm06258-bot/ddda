@@ -1,7 +1,7 @@
 import { z } from 'zod';
 import { JobKind } from './job';
 import { NeedId } from './needs';
-import { DeathCause, Sex, SkillId } from './pawn';
+import { DeathCause, KinRelationType, Sex, SkillId } from './pawn';
 import { ResourceId } from './resource';
 import { StructureKind } from './structure';
 import { TerrainId } from './tile';
@@ -162,5 +162,7 @@ export const LoreDef = z.object({
   burial: Lines,
   death: z.record(DeathCause, z.string()),
   seasonTurn: z.object({ spring: z.string(), summer: z.string(), autumn: z.string(), winter: z.string() }),
+  /** Display term for "X is my <relation>", by X's sex. */
+  kinTerms: z.record(KinRelationType, z.record(Sex, z.string())),
 });
 export type LoreDef = z.infer<typeof LoreDef>;

@@ -1,11 +1,12 @@
 import { Application } from 'pixi.js';
 import { useEffect, useRef } from 'react';
 import { useGameStore } from '../store';
-import { createMapRenderer, pawnAtPixel, TILE_SIZE } from './mapRenderer';
+import { createMapRenderer, pawnAtTile, pixelToTile, TILE_SIZE } from './mapRenderer';
 
-/** Hosts the PixiJS canvas. Redraws entities whenever the store's game state or selection changes. */
+/** Hosts the PixiJS canvas. Redraws whenever the store's game state or selection changes. */
 export function MapView() {
   const hostRef = useRef<HTMLDivElement>(null);
+  const buildMode = useGameStore((s) => s.buildMode);
 
   useEffect(() => {
     const host = hostRef.current;
@@ -19,12 +20,7 @@ export function MapView() {
 
     const { map } = useGameStore.getState().game;
     void app
-      .init({
-        width: map.width * TILE_SIZE,
-        height: map.height * TILE_SIZE,
-        background: 0x1b1712,
-        antialias: true,
-      })
+      .init({ width: map.width * TILE_SIZE, height: map.height * TILE_SIZE, background: 0x1b1712, antialias: true })
       .then(() => {
         if (disposed) {
           app.destroy(true, { children: true });
@@ -49,9 +45,11 @@ export function MapView() {
 
         app.canvas.addEventListener('click', (e) => {
           const rect = app.canvas.getBoundingClientRect();
-          const scale = app.canvas.width / app.renderer.resolution / rect.width;
-          const { game, select } = useGameStore.getState();
-          select(pawnAtPixel(game, (e.clientX - rect.left) * scale, (e.clientY - rect.top) * scale));
+          const scale = (app.canvas.width / app.renderer.resolution) / rect.width;
+          const tile = pixelToTile((e.clientX - rect.left) * scale, (e.clientY - rect.top) * scale);
+          const { game, buildMode: mode, placeAt, select } = useGameStore.getState();
+          if (mode) placeAt(tile);
+          else select(pawnAtTile(game, tile.x, tile.y));
         });
       });
 
@@ -62,5 +60,5 @@ export function MapView() {
     };
   }, []);
 
-  return <div ref={hostRef} className="map-view" />;
+  return <div ref={hostRef} className={buildMode ? 'map-view building' : 'map-view'} />;
 }

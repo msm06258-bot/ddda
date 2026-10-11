@@ -4,7 +4,8 @@ import { isWalkable, terrainAt, walkableTilesNear } from '../../src/sim/map';
 import { CAMP_CLEARING_RADIUS, generateMap } from '../../src/sim/mapgen';
 import { createRng, seedToState } from '../../src/sim/rng';
 
-const gen = (seed: number) => generateMap(createRng(seedToState(seed)), 64, 64);
+const generate = (seed: number) => generateMap(createRng(seedToState(seed)), 64, 64);
+const gen = (seed: number) => generate(seed).map;
 
 describe('generateMap', () => {
   it('is deterministic per seed and differs across seeds', () => {
@@ -16,14 +17,36 @@ describe('generateMap', () => {
     expect(() => TileMap.parse(gen(3))).not.toThrow();
   });
 
-  it('has a walkable camp clearing at the center', () => {
+  it('has a walkable clearing around the camp', () => {
     for (const seed of [1, 2, 3, 4, 5]) {
-      const map = gen(seed);
+      const { map, camp } = generate(seed);
       for (let dy = -CAMP_CLEARING_RADIUS + 1; dy < CAMP_CLEARING_RADIUS; dy++) {
         for (let dx = -CAMP_CLEARING_RADIUS + 1; dx < CAMP_CLEARING_RADIUS; dx++) {
-          expect(isWalkable(map, 32 + dx, 32 + dy)).toBe(true);
+          expect(isWalkable(map, camp.x + dx, camp.y + dy)).toBe(true);
         }
       }
+    }
+  });
+
+  it('puts the camp in the largest connected walkable region (never walled in)', () => {
+    for (let seed = 0; seed < 40; seed++) {
+      const { map, camp } = generate(seed * 7919 + 15684);
+      const seen = new Set<number>([camp.y * 64 + camp.x]);
+      const stack = [camp];
+      while (stack.length > 0) {
+        const p = stack.pop()!;
+        for (const [dx, dy] of [[1, 0], [-1, 0], [0, 1], [0, -1]] as const) {
+          const n = { x: p.x + dx, y: p.y + dy };
+          const k = n.y * 64 + n.x;
+          if (!seen.has(k) && isWalkable(map, n.x, n.y)) {
+            seen.add(k);
+            stack.push(n);
+          }
+        }
+      }
+      const walkable = map.tiles.filter((t) => t.terrain !== 'water' && t.terrain !== 'rock').length;
+      expect(seen.size / walkable).toBeGreaterThan(0.5);
+      expect(map.tiles.some((t, i) => seen.has(i) && (t.terrain === 'forest'))).toBe(true);
     }
   });
 
@@ -46,7 +69,7 @@ describe('map helpers', () => {
   });
 
   it('orders nearby walkable tiles by distance', () => {
-    const tiles = walkableTilesNear(gen(1), { x: 32, y: 32 }, 2);
-    expect(tiles[0]).toEqual({ x: 32, y: 32 });
+    const { map, camp } = generate(1);
+    expect(walkableTilesNear(map, camp, 2)[0]).toEqual(camp);
   });
 });

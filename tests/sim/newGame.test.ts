@@ -31,7 +31,9 @@ describe('createNewGame', () => {
     const [hearth, shelter] = entitiesWith(s, 'structure');
     expect(getComponent(s, 'structure', shelter!)).toEqual({ kind: 'shelter', progress: 1 });
     expect(getComponent(s, 'structure', hearth!)).toEqual({ kind: 'hearth', progress: 1 });
-    expect(getComponent(s, 'position', hearth!)).toEqual({ x: 32, y: 32 });
+    const hearthPos = getComponent(s, 'position', hearth!)!;
+    const shelterPos = getComponent(s, 'position', shelter!)!;
+    expect(Math.abs(hearthPos.x - shelterPos.x) + Math.abs(hearthPos.y - shelterPos.y)).toBe(2);
   });
 
   it('builds reciprocal, plausible kin relations', () => {

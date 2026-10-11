@@ -47,3 +47,14 @@ export function isNight(tick: number): boolean {
 export function currentSeason(tick: number): Season {
   return calendarAt(tick).season;
 }
+
+/** 0 (deep night) .. 1 (full day), with ~1.5h of dusk and dawn. For rendering. */
+export function daylight(tick: number): number {
+  const { nightStart, nightEnd } = content.climate;
+  const t = calendarAt(tick).timeOfDay;
+  const fade = 0.06;
+  if (t >= nightEnd + fade && t < nightStart - fade) return 1;
+  if (t >= nightEnd && t < nightEnd + fade) return (t - nightEnd) / fade;
+  if (t >= nightStart - fade && t < nightStart) return (nightStart - t) / fade;
+  return 0;
+}

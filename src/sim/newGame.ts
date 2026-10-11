@@ -62,15 +62,16 @@ export function createNewGame(opts: NewGameOptions): GameState {
   const base = createEmptyState(seed, width, height);
   const rng = createRng(base.rngState);
 
-  let s: GameState = { ...base, map: generateMap(rng, width, height), resources: { ...STARTING_RESOURCES } };
+  const generated = generateMap(rng, width, height);
+  let s: GameState = { ...base, map: generated.map, resources: { ...STARTING_RESOURCES } };
 
-  const center = { x: Math.floor(width / 2), y: Math.floor(height / 2) };
+  const center = generated.camp;
   const hearth = createEntity(s);
   s = setComponent(hearth.state, 'structure', hearth.id, { kind: 'hearth', progress: 1 });
   s = setComponent(s, 'position', hearth.id, center);
 
   // A seasonal camp: one hide shelter beside the hearth. The band will need more before winter.
-  const shelterPos = { x: center.x + 2, y: center.y };
+  const shelterPos = walkableTilesNear(s.map, center, 2).find((p) => Math.abs(p.x - center.x) + Math.abs(p.y - center.y) === 2)!;
   const shelter = createEntity(s);
   s = setComponent(shelter.state, 'structure', shelter.id, { kind: 'shelter', progress: 1 });
   s = setComponent(s, 'position', shelter.id, shelterPos);

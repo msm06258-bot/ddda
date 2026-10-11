@@ -25,5 +25,23 @@
     "summer": "The sun stood high and long over the steppe.",
     "autumn": "The geese flew south. The elders said: fill the pits.",
     "winter": "Snow came on the north wind. The hearth is the whole world now."
+  },
+  "kinTerms": {
+    "parent": {
+      "female": "mother · *méh₂tēr",
+      "male": "father · *ph₂tḗr"
+    },
+    "child": {
+      "female": "daughter · *dʰugh₂tḗr",
+      "male": "son · *suHnús"
+    },
+    "sibling": {
+      "female": "sister · *swésōr",
+      "male": "brother · *bʰréh₂tēr"
+    },
+    "spouse": {
+      "female": "wife · *gʷénh₂",
+      "male": "husband · *pótis"
+    }
   }
 }

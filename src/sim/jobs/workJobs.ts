@@ -115,7 +115,7 @@ export const chopWood: JobHandler = {
 export const quarry: JobHandler = {
   utility(state) {
     const target = content.balance.work.targetStone;
-    return state.resources.stone < target ? 1 - state.resources.stone / target : 0.05;
+    return Math.max(0, 1 - state.resources.stone / target);
   },
   findTarget(state, id) {
     const nextToRock = (p: TilePos) =>
